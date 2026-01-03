@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import menu.converter.StringToCoachConverter;
 import menu.domain.Coach;
+import menu.domain.FoodCategory;
 import menu.util.DelimiterParser;
 import menu.view.InputView;
 
@@ -39,6 +40,20 @@ public class InputHandler {
         );
     }
 
+    public List<String> inputCoachNotEatingFoods() {
+        DelimiterParser parser = new DelimiterParser();
+        return inputTemplate.execute(
+                inputView::inputCoachNotEatingFoods,
+                value -> {
+                    value = value.trim();
+                    // parse
+                    List<String> parsedFoods = parser.parseFoods(value);
+                    // validate & return
+                    return validateNotEatingFoodsInput(parsedFoods);
+                }
+        );
+    }
+
     public void validateCoachesInput(List<String> parsedNames) {
         //예외1) 입력한 코치의 인원수가 2명에서 5명 사이가 아닐 경우
         if (parsedNames.size() < 2) {
@@ -54,5 +69,20 @@ public class InputHandler {
                 throw new IllegalArgumentException("코치의 이름은 최소 2글자, 최대 4글자로 입력해야 합니다.");
             }
         });
+    }
+
+    public List<String> validateNotEatingFoodsInput(List<String> parsedFoods) {
+        // 예외1) 못 먹는 메뉴가 3개 이상 입력된 경우
+        if (3 < parsedFoods.size()) {
+            throw new IllegalArgumentException("코치가 못 먹는 메뉴는 최대 3개 이하 입력해야 합니다.");
+        }
+        // 예외2) 입력한 메뉴가 원래 리스트에 없는 경우
+        parsedFoods.forEach(food -> {
+            if (!FoodCategory.foodExists(food)) {
+                throw new IllegalArgumentException("입력한 메뉴가 음식 리스트에 없습니다.");
+            }
+        });
+
+        return parsedFoods;
     }
 }

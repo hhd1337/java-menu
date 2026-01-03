@@ -19,7 +19,11 @@ public class MenuController {
         outputView.printCoachNameInputPrompt();
 
         List<Coach> coachList = inputHandler.inputCoachNames();
-        
+
+        coachList.forEach(coach -> {
+            outputView.printCoachNotEatingFoodInputPrompt(coach.getName());
+            inputHandler.inputCoachNotEatingFoods();
+        });
     }
 
 

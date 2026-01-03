@@ -17,6 +17,17 @@ public enum FoodCategory {
         this.foods = foods;
     }
 
+    public static boolean foodExists(String name) {
+        Boolean foodIsInJapanList = FoodCategory.JAPAN.getFoods().stream().anyMatch(foodName -> foodName.equals(name));
+        Boolean foodIsInKoreaList = FoodCategory.KOREA.getFoods().stream().anyMatch(foodName -> foodName.equals(name));
+        Boolean foodIsInChinaList = FoodCategory.CHINA.getFoods().stream().anyMatch(foodName -> foodName.equals(name));
+        Boolean foodIsInAsiaList = FoodCategory.ASIA.getFoods().stream().anyMatch(foodName -> foodName.equals(name));
+        Boolean foodIsInWesternList = FoodCategory.WESTERN.getFoods().stream()
+                .anyMatch(foodName -> foodName.equals(name));
+
+        return foodIsInJapanList || foodIsInKoreaList || foodIsInChinaList || foodIsInAsiaList || foodIsInWesternList;
+    }
+
     public String getName() {
         return this.name;
     }

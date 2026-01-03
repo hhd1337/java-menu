@@ -10,4 +10,8 @@ public class Coach {
         this.name = name;
         this.neverEatingFoods = null;
     }
+
+    public String getName() {
+        return this.name;
+    }
 }
